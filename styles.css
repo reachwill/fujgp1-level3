@@ -1,0 +1,52 @@
+output{
+    background-color:chartreuse;
+    padding: 7px;
+    margin: 10px;
+}
+
+.cat-links a{
+    display:inline-block;
+    border:1px solid #ccc;
+    border-radius: 5px;
+    margin:5px 5px 5px 0;
+    padding: 5px;
+    text-decoration: none;
+}
+
+.cat-links a:hover{
+    background-color: cadetblue;
+    transition: background-color 0.5s;
+    color:white;
+}
+
+
+.active-cat{
+    background-color: aquamarine;
+}
+
+.red{
+    color:red;
+}
+
+#main-footer{
+    margin-top: 20px;
+    background-color: cadetblue;
+    padding: 10px;
+    color:white;
+    font-size: 0.85em;
+}
+
+table img{
+    width:100%;
+}
+
+.copyright-style{
+    font-size: 0.85em;
+}
+
+
+
+
+
+
+

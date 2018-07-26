@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+   
+   <!-- display employees here-->
+   <table id="employees_tbl">
+       <tr>
+           <td></td>
+       </tr>
+   </table>
+   
+   <script>
+    
+    class Employee{
+        
+        constructor(p_fname,p_lname,p_email){
+            this.fname = p_fname;
+            this.lname = p_lname;
+            this.email = p_email;
+        }
+        
+    }
+       
+    var emp1 = new Employee('Jane','Doe','jane@there.com');
+    var emp2 = new Employee('John','Doe','john@there.com');
+       
+    var employees = new Array(emp1,emp2);
+//    employees.push(emp1);
+//    employees.push(emp2);
+       
+       
+       employees.forEach(function(emp){
+           
+           var str = '<tr><td>'+emp.fname+'</td><td>'+emp.lname+'</td><td>'+emp.email+'<td></tr>';
+           document.getElementById('employees_tbl').innerHTML+=str;
+           
+           
+           
+//           var tableRow = document.createElement('tr');
+//           var fnameCell = document.createElement('td');
+//           fnameCell.innerHTML = emailCell;
+//           tableRow.appendChild(fnameCell);
+//           var lnameCell = document.createElement('td');
+//           lnameCell.innerHTML = emp.lname;
+//           tableRow.appendChild(lnameCell);
+//           var emailCell = document.createElement('td');
+//           emailCell.innerHTML = emp.email;
+//           tableRow.appendChild(emailCell);
+//           
+//           document.getElementById('employees_tbl').appendChild(tableRow);
+       });
+       
+    
+       
+    
+    
+    
+    
+    </script>
+    
+</body>
+</html>

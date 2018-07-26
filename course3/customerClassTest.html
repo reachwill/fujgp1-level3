@@ -1,0 +1,94 @@
+<html>
+    
+    
+    <head>
+        
+    </head>
+    
+    
+    
+    <body>
+       
+<!--create a view component to display a list of customers-->
+       <table>
+           <thead>
+               <tr>
+                   <th>Customer Number</th>
+                   <th>Customer Name</th>
+               </tr>
+           </thead>
+           <tbody></tbody>
+       </table>
+        
+        
+        
+<!--Link to the jQuery javascript code library      -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        
+        
+        <script>
+            
+            
+            class Communicator{
+                
+                constructor(dataUrl){
+                    this.dataUrl = dataUrl
+                }
+                
+                static getData(dataUrl){
+                    //use the jQuery ajax() method to get the data fom the back end asynchronously (Asynchronous Javascript And XML)
+                    $.ajax({
+                        url:dataUrl,
+                        type: 'get',
+                        dataType: 'json',//Javascript Object Notation
+                        success:function(data){
+                            console.log(data);
+                        },
+                        error:function(xmlHttpRequest,message,status){
+                            console.log(message);
+                        }
+                    });
+                    
+                }
+                
+                
+            }
+            
+            //create an object to communicate with the back end (server-side)
+//            var Communicator = {
+//                //the getData function should be called a method because it belongs to an object
+//                getData:function(dataUrl){
+//                    //use the jQuery ajax() method to get the data fom the back end asynchronously (Asynchronous Javascript And XML)
+//                    $.ajax({
+//                        url:dataUrl,
+//                        type: 'get',
+//                        dataType: 'json',//Javascript Object Notation
+//                        success:function(data){
+//                            console.log(data);
+//                        },
+//                        error:function(xmlHttpRequest,message,status){
+//                            console.log(message);
+//                        }
+//                    });
+//                }
+//            }
+            
+//            var comm = new Communicator('customers.php');
+//            comm.getData();
+            
+            Communicator.getData('customers.php');
+            
+        
+        
+        
+        </script>
+        
+        
+        
+    </body>
+    
+    
+    
+    
+    
+</html>

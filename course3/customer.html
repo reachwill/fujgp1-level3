@@ -1,0 +1,209 @@
+<html>
+    
+    
+    <head>
+       
+       
+       <script id="formsTemplate" type="text/x-handlebars-template">
+           {{#each savings}}
+            <form>
+               
+<!--               Use hidden field to track unique id of the savings thingy-->
+              <input type="hidden" name="savingsId" value="{{savingsId}}">
+               
+                <input class="big" type="text" name="name" value="{{name}}">
+                
+                
+                <input type="text" name="total" value="{{total}}">
+                
+                <button type="button" onclick="save(this.form)">Save</button>
+                
+            </form>
+            
+            
+           {{/each}}
+       </script>
+       
+        
+    </head>
+    
+    
+    
+    <body>
+      
+      <div id="formsDiv"></div>
+      
+      
+       
+<!--create a view component to display a list of customers-->
+       <table id="customers">
+           <thead>
+               <tr>
+                   <th>Customer Number</th>
+                   <th>Customer Name</th>
+               </tr>
+           </thead>
+           <tbody></tbody>
+       </table>
+        
+        
+        
+<!--Link to the jQuery javascript code library      -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        
+        <script src="js/handlebars-v4.0.11.js"></script>
+        
+        
+        <script>
+            
+           
+            
+            
+            
+            
+            //define a class to render into the view
+            class Renderer{
+                
+                constructor(){}
+                
+                static renderCustomers(data){
+                    //we need to create an object which has a property (customers) expected by the Handlebars template (customerTemplate)
+                    var dataObj = {
+                        customers:data
+                    }
+                    
+                    //write algoritm to fix the problem (remove + symbols and html entities)
+                    for(var i=0;i<dataObj.customers.length;i++){
+                       var nameToFix = dataObj.customers[i].customerName;
+                        
+                       nameToFix = nameToFix.replace(/\+/g,' ');//regexp to remove all + symbols
+                    nameToFix = unescape(nameToFix);//unescape converts all html entities
+                        dataObj.customers[i].customerName = nameToFix;
+                    }
+                    
+                    var source = document.getElementById('customersTemplate').innerHTML;
+                    var template = Handlebars.compile(source);
+                    var html = template(dataObj);
+                    $('#customers tbody').html(html);
+                }//end renderCustomers()
+                
+                
+            }
+
+            
+            //define a  class which will be used to communicate with the back end  - NOTE this is the latest version of javascript (ES6 ECMAScript) - it will only work in the latest browsers.
+            class Communicator{
+                
+                constructor(){}
+                
+                getData(dataUrl){
+                    
+                    //use the jQuery ajax() method to get the data fom the back end asynchronously (Asynchronous Javascript And XML)
+                    $.ajax({
+                        url:dataUrl,
+                        type: 'get',
+                        dataType: 'json',//Javascript Object Notation
+                        success:function(data){
+                            Renderer.renderCustomers(data);
+                        },
+                        error:function(xmlHttpRequest,message,status){
+                            console.log(message);
+                        }
+                    });
+                    
+                    
+                    
+                }//end of getData()
+                
+                
+                
+            }
+            
+            var comm = new Communicator();
+            comm.getData('customers.php');
+        
+
+        //FOR THE SAVINGS ////////////////////////////////////////
+            
+            
+            //this is hard coded but in reality would be a data structure sent back from a php page with AJAX
+            var data ={
+                savings:[
+                    {
+                        name:'Savings Form 1',
+                        total: '230.00',
+                        savingsId:1
+                    },
+                    {
+                        name:'Another Form',
+                        total: '230.00',
+                        savingsId:2
+                    },
+                    {
+                        name:'The 3rd Form',
+                        total: '230.00',
+                        savingsId:3
+                    } 
+                ]
+            };
+            
+            
+     //the Handlebars template is at the top of this page in the header           
+    var source = document.getElementById('formsTemplate').innerHTML;
+    var template = Handlebars.compile(source);
+    var html = template(data);
+    document.getElementById('formsDiv').innerHTML = (html);   
+                
+                
+         function save(form){
+             //console.log(form.savingsId.value);
+             var dataToSave={
+                 savingsId:form.savingsId.value,
+                 name:form.name.value,
+                 total:form.total.value
+             }
+             console.log(dataToSave);
+             
+             $.ajax({
+                 url:'save.php',
+                 dataType:'text',
+                 type:'post',
+                 data:dataToSave,
+                 success:function(data){console.log(data)},
+                 error:function(x,m,s){console.log(m)}
+             });
+             
+             
+         }  
+            
+            
+        
+        </script>
+        
+        
+        
+<!--define a template for Handlebars-->
+       <script id="customersTemplate" type="text/x-handlebars-template">
+           {{#each customers}}
+            
+            <tr>
+                
+                <td>{{customerNumber}}</td>
+                <td>{{customerName}}</td>               
+                
+            </tr>
+            
+           {{/each}}
+       </script>
+       
+       
+        
+        
+        
+    </body>
+    
+    
+    
+    
+    
+</html>

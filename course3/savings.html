@@ -1,0 +1,128 @@
+<html>
+    
+    
+    <head>
+       
+       
+       <script id="formsTemplate" type="text/x-handlebars-template">
+           {{#each savings}}
+            <form>
+               
+<!--               Use hidden field to track unique id of the savings thingy-->
+              <input type="hidden" name="savingsId" value="{{savingsId}}">
+               
+                <input class="big" type="text" name="name" value="{{name}}">
+                
+                
+                <input type="text" name="total" value="{{total}}">
+                
+                <button type="button" onclick="save(this.form)">Save</button>
+                
+            </form>
+            
+            
+           {{/each}}
+       </script>
+       
+        
+    </head>
+    
+    
+    
+    <body>
+      
+      <div id="formsDiv"></div>
+      
+      
+       
+
+<!--Link to the jQuery javascript code library      -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        
+        <script src="js/handlebars-v4.0.11.js"></script>
+        
+        
+        <script>    
+        //FOR THE SAVINGS ////////////////////////////////////////
+            
+            
+            //this is hard coded but in reality would be a data structure sent back from a php page with AJAX
+            var savingsData ={
+                savings:[
+                    {
+                        name:'Savings Form 1',
+                        total: '230.00',
+                        savingsId:1
+                    },
+                    {
+                        name:'Another Form',
+                        total: '230.00',
+                        savingsId:2
+                    },
+                    {
+                        name:'The 3rd Form',
+                        total: '230.00',
+                        savingsId:3
+                    } 
+                ]
+            };
+            
+            
+            //THIS IS WHAT YOU WOULD USE TO CALL SAVINGS DATA FROM THE SERVER INSTEAD OF HARD CODED ABOVE
+            function getSavings(){
+                $.ajax({
+                    url:'getSavings.php',
+                    dataType:'json',
+                    type:'get',
+                    success:function(data){
+                        //this is where you could render the data returned from the php (Handlebars)
+                    },
+                    error:function(x,m,s){}
+                }); 
+            }
+            
+            //getSavings();
+            
+            
+            
+     //the Handlebars template is at the top of this page in the header           
+    var source = document.getElementById('formsTemplate').innerHTML;
+    var template = Handlebars.compile(source);
+    var html = template(savingsData);//see hardcoded object above
+    document.getElementById('formsDiv').innerHTML = (html);   
+                
+                
+         function save(form){
+             //console.log(form.savingsId.value);
+             //create an object of data to send to the back end
+             var dataToSave={
+                 savingsId:form.savingsId.value,
+                 name:form.name.value,
+                 total:form.total.value
+             }
+             console.log(dataToSave);
+             
+             $.ajax({
+                 url:'save.php',
+                 dataType:'text',//data type to be returned from the php
+                 type:'post',
+                 data:dataToSave,
+                 success:function(data){console.log(data)},
+                 error:function(x,m,s){console.log(m)}
+             });
+             
+             
+         }  
+            
+            
+        
+        </script>
+        
+        
+    </body>
+    
+    
+    
+    
+    
+</html>
